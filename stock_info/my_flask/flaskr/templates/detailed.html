@@ -1,0 +1,96 @@
+{% include 'header.html' %}
+<div class="pageelement">
+{% with messages = get_flashed_messages(category_filter="error") %}
+  {% if messages %}
+  
+  <div class="container-fluid">
+    <div class="alert alert-warning" role="alert">
+    {% for  message in messages %}
+      {{ message }}<br>
+    {% endfor %}
+    </div>
+  </div>
+
+  {% endif %}
+{% endwith %}
+  <div class="row">
+    <div class="form-group row">
+        <label for="symbol" class="col-sm-1 col-form-label d-flex justify-content-end align-items-end">Stock Symbol</label>
+        <div class="col-sm-1">
+          <input type="text" class="form-control" id="symbol" placeholder="symbol" value="{{ page_data['inputValue'] }}">
+        </div>
+         <div class="col-sm-1">
+          <button id="retrieve" class="btn btn-primary">Retrieve</button>
+        </div>
+      </div>
+  </div>
+
+  {% if symbol is defined %}
+  <input type="hidden" id="submittedSymbol" name="submittedSymbol" value="{{ symbol }}">
+  <div id="myChart">
+  </div>
+  {% endif %}
+
+</div>
+<!-- needs to occur before loading the footer as the footer closes off the html page -->
+<script src="{{ url_for('static', filename='includes/stock.js') }}"></script>
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js" charset="utf-8"></script>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stock Information</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+  }
+  .container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    max-width: 800px;
+    margin: auto;
+  }
+  .stock-info {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  .stock-info header {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  .stock-info .data {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+  }
+  .stock-info .data:not(:last-child) {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+  }
+</style>
+</head>
+<body>
+<label for="symbol">Company Summary</label>
+  <div class="container"></div>
+    <div class="stock-info">
+      <div class="data"><span>Name</span> <span>181.95 x 1000</span></div>
+      <div class="data"><span>Symbol</span> <span>183.42</span></div>
+      <div class="data"><span>Exchange</span> <span>183.42</span></div>
+      <div class="data"><span>Sector</span> <span>181.99 x 900</span></div>
+      <div class="data"><span>Industry</span> <span>181.66 - 184.85</span></div>
+      <div class="data"><span>MarketCapitalization</span> <span>143.90 - 199.62</span></div>
+      <div class="data"><span>PERatio</span> <span>49,752,465</span></div>
+      <div class="data"><span>EPS</span> <span>53,397,922</span></div>
+      <div class="data"><span>DividendPerShare</span> <span>1.31</span></div>
+      <div class="data"><span>DividendYield</span> <span>28.31</span></div>
+      <div class="data"><span>52WeekHigh</span> <span>6.44</span></div>
+      <div class="data"><span>52WeekLow</span> <span>May 02, 2024 - May 06, 2024</span></div>
+  </div>
+</div>
+</body>
+</html>
+
