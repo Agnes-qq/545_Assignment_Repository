@@ -1,8 +1,19 @@
 import requests
 import pandas as pd
-import config as config
+import config 
 import os
 path = os.getcwd()
+
+def get_current(symbol):
+    url = 'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol='+symbol+'&apikey='+config.api_key
+    r = requests.get(url)
+    data = r.json()
+
+    current_price = data['Global Quote']['05. price']
+    pre_close = data['Global Quote']['08. previous close']
+    volume = data['Global Quote']['06. volume']
+
+    return [current_price, pre_close, volume]
 
 def get_stock_info(symbol):
     url = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&outputsize=full&symbol='+symbol+'&apikey='+config.api_key

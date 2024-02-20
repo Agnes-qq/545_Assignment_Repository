@@ -5,7 +5,7 @@ from flask import (
 from werkzeug.exceptions import abort
 import pandas as pd
 from flaskr.db import get_db
-from flaskr.get_data import get_stock_info, get_stock_news, get_comp_info
+from flaskr.get_data import get_stock_info, get_stock_news, get_comp_info,get_current
 import os
 path = os.getcwd()
 bp = Blueprint('views', __name__)
@@ -24,6 +24,10 @@ def show_stock_info(symbol = None):
         page_data = {"title": "MARKET INSIGHT: " + symbol, "inputValue": symbol}
         try:
             get_stock_info(symbol)
+            stockdata = pd.read_csv(path+"/flaskr/chart/data/"+symbol+".csv")
+            previous_open = stockdata['Open'][len(stockdata)-1]
+            price = get_current(symbol)
+            
             try:
                 get_stock_news(symbol)
                 get_comp_info(symbol)
@@ -31,8 +35,9 @@ def show_stock_info(symbol = None):
                 summaries= pd.read_csv(path+"/flaskr/chart/data/"+symbol+"_summaries.csv")
             except:
                 return render_template("detailed.html", page_data=page_data, symbol=symbol)
+            
             with open(path+"/flaskr/chart/data/"+symbol.upper()+'.csv')  as csvfile:
-                return render_template("detailed.html", page_data=page_data, symbol=symbol, compinfo=compinfo,summaries=summaries)#,,news=news) 
+                return render_template("detailed.html",price = price, previous_open = previous_open, page_data=page_data, symbol=symbol, compinfo=compinfo,summaries=summaries)#,,news=news) 
         except:
             # see https://flask.palletsprojects.com/en/3.0.x/patterns/flashing/#flashing-with-categories
             flash('Stock symbol not found: '+symbol,'error') 

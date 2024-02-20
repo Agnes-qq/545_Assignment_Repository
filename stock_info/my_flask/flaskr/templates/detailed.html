@@ -26,6 +26,13 @@
   </div>
 
   {% if symbol is defined %}
+  <label for="symbol">{{symbol}}</label>
+    <div class="stock-current">
+      <div class="data"><span>Current Price: </span> <span>{{ price[0] }}</span></div>
+      <div class="data"><span>Previous Open: </span> <span>{{ previous_open }}</span></div>
+      <div class="data"><span>Previous Close: </span> <span>{{ price[1] }}</span></div>
+      <div class="data"><span>Volume: </span> <span>{{ price[2] }}</span></div>
+    </div>
   <input type="hidden" id="submittedSymbol" name="submittedSymbol" value="{{ symbol }}">
   <div id="myChart">
   </div>
